@@ -1,0 +1,16 @@
+There are three ways of handling exception in Spring:
+
+  1. Controller level
+  2. Global level
+  3.
+
+ 1. Controller level
+        For this in the controller class(@RestController), the Annotation used for exceptionHandler methos is 
+            @ExceptionHandler(<comma seperated all the checked exceptions class name>)
+
+  2. Global level
+      For this in seperate folder/package create a class and annotate this class with
+            @RestControllerAdvice
+      Then add the @ExceptionHandler annotated methods in this class
+
+  3.
