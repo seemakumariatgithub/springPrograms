@@ -44,7 +44,7 @@ There are two packages that forms the basis of spring framework's IoC container,
                   3. a custom destroy-method definition
     
 2. ApplicationContext Interface: 
-        This is the sub-interface of BeanFactory. 
+        This is the sub-interface of BeanFactory or superset of BeanFactory. 
         This is defined in 'org.springframework.context' package
         This Interface provides:
               1. Easier integration with AOP's features.
@@ -52,6 +52,35 @@ There are two packages that forms the basis of spring framework's IoC container,
               3. Event publication
               4. Application layer specific context, like 'WebApplicatonContext' for Web application.
          This interface is the central interface to provide the configuration of an application.
+
+=======================================================================================================
+BEAN:
+    In Spring, the object that forms the backbone of the application and
+        that is managed by IoC container is called 'bean'.
+    Or we can say, 'Bean' is an object that is initialised, assembled and managed by SpringIoC container.
+    Otherwise 'bean' is simple object just like other object in java application.
+
+
+========================================================================================================
+IoC CONTAINER OVERVIEW:
+
+    The 'org.springframework.context.ApplicationContext' interface represents the Spring Ioc Container.
+
+    Thus this is reponsiible for instantiating, configuring and assembling the bean.
+    The Container gets the instruction to do above activity, by reading the configuration metadata.
+    The Configuration metadata is representated as annotated componet class, configuration class with factory method,
+            exteranl XML file or Groovy scripts.
+    With either of these format, we can compose our application and the rich interdependencies among those components.
+
+    In stand alone application it is common to create instance of 'AnnotationConfigApplicationContext' and 'ClassPathXmlApplicationContext'.
+
+NOTE: Our application classes are combined with configuration metadata,
+        so after Application Context is created and inititalized, 
+            our application is fully configured and executable system or application.
+==================================================================================================================
+CONFIGURATION METADATA:
+    
+
 
 
 
