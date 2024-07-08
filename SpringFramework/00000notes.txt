@@ -1,0 +1,26 @@
+IoC: Inversion of Control
+DI: Depedency Injection is the specialized version of IoC.
+    In DI, the objects define their dependecies only through:
+        1. Constructor argument
+        2. Argument to the factory method
+        3. Propertied that are set on the object instance after it is constructed or resturned from a factory method.
+The IoC container then inject those dependency when bean is created.
+There are two packages that forms the basis of spring framework's IoC container, these are:
+      1. org.springframework.beans
+      2. org.springframework.context
+
+1. BeanFactory Interface: 
+            It provides the advanced configuration mechanism capable of managing any type of object.
+2. ApplicationContext Interface: 
+        This is the sub-interface of BeanFactory. 
+        This Interface provides:
+              1. Easier integration with AOP's features.
+              2. Message resource handling
+              3. Event publication
+              4. Application layer specific context, like 'WebApplicatonContext' for Web application.
+          
+
+
+
+
+
