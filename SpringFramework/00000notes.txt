@@ -4,7 +4,7 @@ Spring framework has feeatures that are organized into 20 modules.
 These 20 modules are grouped into 7 groups.
     1. Core Container
     2. AOP
-    3. Instrumentatio
+    3. Instrumentation
     4. Messaging
     5. Data Access/Integration
     6. Web
@@ -32,9 +32,26 @@ Artifact names is used as(correatesto) artifact IDs in the Dependency Management
         -spring-instrument
         -spring-instrument-tomcat
 4. Messaging
+    This contains:
+        -spring-messaging
+        
 5. Data Access/Integration
+    This Contains:
+        -spring-jdbc
+        -spring-tx
+        -spring-orm
+        -spring-oxm
+        -spring-jms
 6. Web
+    This Contains:
+        - spring-web
+        - spring-webmvc
+        - spring-websocket
+        - spring-webmvc-portlet
+
 7. Test
+    This Contains:
+        - spring-test
 ==========================================================================
 1. Core Container
     This containes:
@@ -109,6 +126,94 @@ Artifact names is used as(correatesto) artifact IDs in the Dependency Management
 
         -spring-instrument-tomcat:
             This module contains the spring's instrumentation agent for tomcat.
+========================================================================
+4. Messaging
+    This contains:
+        -spring-messaging:
+            This modules includes set of annotations for mapping messages to methods.
+=========================================================================
+5. Data Access/Integration
+    This Contains:
+        -spring-jdbc:
+                - This module provides JDBC abstraction layer.
+                - This removes the need for tedious JDBC coding.
+                - And parsing of database-vendor specific error code.
+
+        -spring-tx:
+                -This module supports programatic and declarative transaction managment for:
+                    1. classes that implements special interfaces
+                    2. and for all POJO classes.
+        -spring-orm:
+                - This module provides the integration layer for object-relation mapping APIs.
+                    like: Hibernate, JPA , JDO 
+                - By using this module we can use all the ORM frameworks in combination with the features of Spring.
+                    like :declarative transaction managment feature.
+
+        -spring-oxm:
+                - This module provides the abstarction layer that supports Object/XML mapping implmentaion,
+                        Such as :
+                            JAXB,
+                            Castor,
+                            XMLBeans,
+                            JiBX,
+                            XStream.        
+
+        -spring-jms:
+            - Java Messaging Service module
+            -This contains feature for producing and consuming messages.
+            - This modules also provides integration with spring-messaging module
+===================================================================================
+6. Web
+    This Contains:
+        - spring-web:
+                - This modules provides basic web-oriented integration features:
+                    such as : 
+                        multipart file upload
+                        initialization of IoC container using servlet listner
+                        and web-oriented application context
+                - This also contains http client.
+                - Web related parts of Spring's remoting support.
+
+        - spring-webmvc:
+                - This is also called as Web-Servlet module.
+                - This module contains:    
+                    Spring's Model-View-Controller
+                    REST Web Service implementation
+                - Spring MVC provides clear seperation between domain model code and web forms,
+                    and integrates with all other features of Spring Framework.
+
+        - spring-websocket
+        - spring-webmvc-portlet:
+                - This is also know Web-Portlet module.
+                - This provides MVC implementaion to be used in portlet environment
+                - And it also mirrors the functionality of server based spring-webmvc module.
+=========================================================================
+7. Test
+    This Contains:
+        - spring-test:
+           - This supports unit testing and integration tesing of Spring components with JUnit and TestNG
+           - This provides consistent loading of Spring 'applicationContext'
+                and caching of these contexts.
+           - It also provides mock Objects that we can use to test our code in isolation.
+=========================================================================
+Dependency Management and Naming Conventions:
+
+NOTE : Dependency Management and Dependency Injection are two completly different concept.
+
+-To get all those nice features of spring into our application we need to assenble all the libraries needed.
+        and get them onto our classpath at runtime and possibly at compile time as well.
+-These dependencies are not virtual components that are injected, but are physical resources in the file system.
+-The process of dependency management involves locating these resources, storing them and adding them to the classpath.
+
+-Dependencies can be :
+        1. DIRECT:
+            - For eg:
+                my application depends on Spring at runtime..
+        2. INDIRECT: 
+            - For eg: 
+                my application depends on common-dbcp, which depends on common-pool
+            - This type of dependency is called 'transitive'.
+            - Indirect dependeies are hard to identify and manage.
 =========================================================================
 IoC: Inversion of Control
 DI: Depedency Injection is the specialized version of IoC.
