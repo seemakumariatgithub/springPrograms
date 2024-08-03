@@ -1,3 +1,115 @@
+MODULES OF SPRING FRAMEWORK:
+
+Spring framework has feeatures that are organized into 20 modules.
+These 20 modules are grouped into 7 groups.
+    1. Core Container
+    2. AOP
+    3. Instrumentatio
+    4. Messaging
+    5. Data Access/Integration
+    6. Web
+    7. Test
+========================================================================
+Below are the details of modules for each feature and their Artifact name.
+Artifact names is used as(correatesto) artifact IDs in the Dependency Management tool.
+
+========================================================================
+1. Core Container
+    This containes:
+        -spring-core
+        -spring-beans
+        -spring-context
+        -spring-context-support
+        -spring-expression (Spel - Spring Expression Language)
+
+2. AOP
+    This contains:
+        -spring-aop
+        -spring-aspects
+
+3. Instrumentation
+    This contains:
+        -spring-instrument
+        -spring-instrument-tomcat
+4. Messaging
+5. Data Access/Integration
+6. Web
+7. Test
+==========================================================================
+1. Core Container
+    This containes:
+        -spring-core
+        -spring-beans
+        -spring-context
+        -spring-context-support
+        -spring-expression (Spel - Spring Expression Language)
+
+        -spring-core: 
+        -spring-beans:
+            Above two modules provide fundamental parts of framework.
+                including IoC and dependency injection feature.
+
+            'BeanFactory' is the sophisticated implementation of factory pattern.
+             This removes the need for programatic singleton
+                and allows to decouple the configuration 
+                    and specification of dependency from the program logic.
+
+        -spring-context:
+            - This is build on the solid base provided by 'spring-core' and 'spring-beans'.
+            - This is the 'means' to access the object in framework-style.
+            - This is also called as context module.
+            - This module inherits its fetures from beans modules, 
+                and adds support for 
+                        - internationalization 
+                        - event propogation
+                        - resource loading
+                        - transparent creation of context
+            - This module also supports J2EE features, EJB, JMX, basic remoting.
+            - The 'ApplicationContext' interface is the focal point of context module.
+            
+        -spring-context-support:
+            This module provides support for integrating common third-party libraries 
+                into the spring application context for:
+                    1. caching (EhCache, Guava, JCache)
+                    2. mailing(JavaMailing)
+                    3. scheduling( CommonJ, Quatz)
+                    4. templates engine(FreeMaker, JasperReport, Velocity)
+
+        -spring-expression (Spel - Spring Expression Language):
+                This provides powerful Expression Language, for querying and manipulating an object graph at runtime.
+                This module supports:
+                    1- setting and getting property values.
+                    2- property assignment
+                    3- method invocation
+                    4- accessing the contents of arrays, collections and indexers
+                    5- Logical and arithmetic operators
+                    6- named varriables
+                    7- retrival of objects by name from IoC
+                    8- lists projection and selection
+                    9- common list aggregation
+
+=========================================================================
+2. AOP
+    This contains:
+        -spring-aop:
+            This module provides aspect-oriented programing implementation .
+            It allows to define, for eg: 
+                - method interceptors and pointcuts to cleanly decouple code
+                    that implements functionality that should be seperated.
+                - Using source level metadata functionality, we can incorporate behavioral information into the code.
+                    
+        -spring-aspects:
+                This module provides integration with AspectJ.
+========================================================================
+3. Instrumentation
+    This contains:
+        -spring-instrument:
+            This provides support for class instrumnetaion 
+                and classloader implementation.
+
+        -spring-instrument-tomcat:
+            This module contains the spring's instrumentation agent for tomcat.
+=========================================================================
 IoC: Inversion of Control
 DI: Depedency Injection is the specialized version of IoC.
     In DI, the objects define their dependecies only through:
