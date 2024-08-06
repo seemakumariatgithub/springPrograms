@@ -215,14 +215,39 @@ NOTE : Dependency Management and Dependency Injection are two completly differen
             - This type of dependency is called 'transitive'.
             - Indirect dependeies are hard to identify and manage.
 =========================================================================
+LOGGING:
+
+==========================================================================
+Topics that we will ccover for Basic feature of Sprng framework will be :
+    1- The Ioc container
+    2- Resourses
+    3- Validation, Data Binding and Type conersion
+    4- Spring Expression Language
+    5- Aspect Oriented Programing with Spring
+    6- Spring AOP API
+
+ 
+
+Note: The Spring Framework has its own AOP frmework, which is conceptually easy to understand.
+    it addresses 80 % of AOP requirements in Java enterprise programing.
+
+    AspectJ- is the richest, in terms of feature.
+            it is most mature AOP implementaiton in javaa enterprise.
+
+===========================================================================
+ 1- The Ioc container
+
 IoC: Inversion of Control
 DI: Depedency Injection is the specialized version of IoC.
-    In DI, the objects define their dependecies only through:
+This is the process where object define their dependency, ie, the other objects they work with,
+    only through:
         1. Constructor argument
         2. Argument to the factory method
         3. Properties that are set on the object instance after it is constructed or returned from a factory method.
 
-The IoC container then inject those dependency when bean is created.
+The IoC container then injects those dependency when bean is created.
+This process is fundamentaly inverse, of the bean itself controlling the instantiation or location of its dependencies,
+    by using direct construction of classes or mechanis such as 'sersvice locator' pattern.
 
 There are two packages that forms the basis of spring framework's IoC container, these are:
       1. org.springframework.beans
@@ -235,7 +260,7 @@ There are two packages that forms the basis of spring framework's IoC container,
 
             BeanFactory centralizes the configuration of application components.
             BeanFactory is central registry for application component.
-            This interface loads the bean efinition stored in the configuration source like xml.
+            This interface loads the bean definition stored in the configuration source like xml.
 
                 Bean factory implementations should support the standard bean lifecycle interfaces as far as possible. 
                 The full set of initialization methods and their standard order is:                
@@ -270,11 +295,14 @@ There are two packages that forms the basis of spring framework's IoC container,
               4. Application layer specific context, like 'WebApplicatonContext' for Web application.
          This interface is the central interface to provide the configuration of an application.
 
+NOTE:
+    In short, the 'BeanFactory' provides the cofiguration framework and basic functionality
+              the 'ApplicationContext' adds more enterprise-specific functionality.
 =======================================================================================================
 BEAN:
-    In Spring, the object that forms the backbone of the application and
+    In Spring, the object that is the backbone of the application and
         that is managed by IoC container is called 'bean'.
-    Or we can say, 'Bean' is an object that is initialised, assembled and managed by SpringIoC container.
+    Or we can say, 'Bean' is an object that is initialised, assembled and managed by Spring IoC container.
     Otherwise 'bean' is simple object just like other object in java application.
 
 
@@ -283,11 +311,11 @@ IoC CONTAINER OVERVIEW:
 
     The 'org.springframework.context.ApplicationContext' interface represents the Spring Ioc Container.
 
-    Thus this is reponsiible for instantiating, configuring and assembling the bean.
+    This is reponsiible for instantiating, configuring and assembling the bean.
     The Container gets the instruction to do above activity, by reading the configuration metadata.
-    The Configuration metadata is representated as annotated componet class, configuration class with factory method,
+    The Configuration metadata is representated as annotated component class, configuration class with factory method,
             exteranl XML file or Groovy scripts.
-    With either of these format, we can compose our application and the rich interdependencies among those components.
+    With either of these format, we can express the object that compose our application and the rich interdependencies among those components/objects.
 
     In stand alone application it is common to create instance of 'AnnotationConfigApplicationContext' and 'ClassPathXmlApplicationContext'.
 
@@ -296,7 +324,29 @@ NOTE: Our application classes are combined with configuration metadata,
             our application is fully configured and executable system or application.
 ==================================================================================================================
 CONFIGURATION METADATA:
-    
+    The Configuration metadata represents how we as developer tell the IoC(Spring) container to instantiate, 
+        configure and assemble the object in our application.
+
+NOTE: The Spring Ioc Container has totaly decoupled itself from the formate in which the configuration metadata can be written.
+
+    Configuration Metadata can be in the form of:
+        1. XML
+        2. Annotation Based Configuration: This was intorduced in Spring 2.3
+        3. Java Based Configuration: This was introduced in Spring 3.0
+                Many features provided by the Spring JavaConfig project became part of the core Spring Framework.
+                To use these new features,used annotations, 
+                        @Configuration
+                        @Bean
+                        @Import
+                        @DependsOn
+
+
+
+
+
+
+
+
 
 
 
