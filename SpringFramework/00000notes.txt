@@ -340,10 +340,254 @@ NOTE: The Spring Ioc Container has totaly decoupled itself from the formate in w
                         @Import
                         @DependsOn
 
+Spring cofiguration have atleast one bean definition, that container must manage.
+    1. In XML based configuration bean is defined by 
+        <beans>
+            <bean/> => bean is defined here
+        </beans>
+
+    2. Java configuration typically uses @Bean annotated methods, inside the @Configuration class.
+
+NOTE: These bean definitions are the actual object that make up the application.
+Typically we define:
+    1. service layer object
+    2.Data access objects
+    3. Presentation objects, like action instance
+    4.infrastructure object like Hibernate sessionfactories, JMS queues.
+
+Springs Integration with AspectJ is used to configure object that have been created outside the IoC Container.
+
+Below is the example that shows the basic structure of XML-based configuration metadata:
+    
+    <?xml version="1.0" encoding="UTF-8"?>
+        <beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans
+         https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+             <bean id="..." class="...">
+             <!-- collaborators and configuration for this bean go here -->
+             </bean>
+
+             <bean id="..." class="...">
+             <!-- collaborators and configuration for this bean go here -->
+             </bean>
+         <!-- more bean definitions go here -->
+        </beans>
+
+    Here: 
+        id : is the string that we use to identify the individual bean definition.
+            The value of 'id' used for collaborating objects as well.
+
+        class: is the type for the bean
+                class uses fully qualified classname.
+        ============================================================
+2. Instantiating a container:
+
+    Instantiating the spring IoC container is straight forward.
+    We use 'ApplicationContext' constructor for this.
+    We pass the location path/paths to the constructor.
+    This path is the resource string that allows to load the configuration metadata from veriety of external resources.
+            like : file system, or java CLASSPATH etc.
+
+ApplicationCOntext context=new classPathXmlApplicationContext('sersvice.xml','daos.xml')
+
+NOTE: Resource paths are used to construct the Applications Contexts.
+      
+We can use one or more occurrences of the <import/> element to load bean definitions from another file/files
+For eg:
+            <beans>
+                 <import resource="services.xml"/>
+                 <import resource="resources/messageSource.xml"/>
+                 <import resource="/resources/themeSource.xml"/>
+
+                 <bean id="bean1" class="..."/>
+                 <bean id="bean2" class="..."/>
+            </beans>
+
+All location paths are relative to the definition file doing the importing.
+
+        =========================================================
+Bean Overview:
+
+    Spring IoC manages one or more beans.
+    These bean's definition are provided in the configuration metadata.
+    Bean definitions are represented as 'BeanDefinition' object.
+    These defiitions contains(among other information) following metadata:
+        1. Packaged qualified class name:
+        2. Bean behavioral configuration elements, like scope, lifecyclecallback, etc
+        3. Referencs to other beans
+        4. Other configuration settings.
 
 
+The bean definition have following :
+
+class :  “Instantiating beans”
+name : “Naming beans”
+
+scope : “Bean scopes”
+constructor arguments: “Dependency Injection”
+properties : “Dependency Injection”
+autowiring mode: “Autowiring collaborators”
+lazy-initialization mode : “Lazy-initialized beans”
+initialization method : “Initialization callbacks”
+destruction method : “Destruction callbacks”
+
+DEPENDENCY INJECTIION:
+    /*
+    constructor arguments: “Dependency Injection”
+    properties : “Dependency Injection”
+    */
+    Definition for this have been provided above:
+    
+    Advantages of Dependency Injection:
+        1.Code is cleaner
+        2.Decoupling is more effective
+        3.The Object doesnot lookup for its dependency, 
+                and dosenot know the location or class of the  dependency.
+        4. Testing becomes easier,
+                specially when the dependencies are not abstract class or interface
+                DI allows stub or mock implementations to be used in unit testing
+
+    There are two types of dependency injection:
+        1.Constructor base dependency injection
+        2 Setter based dependency injection
+
+        1.Constructor base dependency injection
+            -This is done by container, by invoking the constructor with number of arguments,
+                each representing dependency.
+
+        Eg:
+            public class SimpleMovieLister {
+                 // the SimpleMovieLister has a dependency on a MovieFinder
+                 private MovieFinder movieFinder;
+
+                 // a constructor so that the Spring container can inject a MovieFinder
+                 public SimpleMovieLister(MovieFinder movieFinder) {
+                 this.movieFinder = movieFinder;
+                 }
+
+                 // business logic that actually uses the injected MovieFinder is omitted...
+            }
+
+        CONSTRUCTOR ARGUMENT RESOLUTION:
+
+            COnstructor argument resolution maching occures using the argument's type.
+            If no potential ambiguity exists in the constructor arguments of a bean definition,
+                then the oder in which the constructor arguments are defined in a bean definition is the order 
+                    in which those arguments are supplied to the appropriate constructor, when bean is being instantiated.
+        For Eg:
+            For below class
+            package x.y;
+            public class Foo {
+                 public Foo(Bar bar, Baz baz) {
+                 // ...
+                 }
+            }
+
+            The metadata configuration will be like:
+
+            <beans>
+                 <bean id="foo" class="x.y.Foo">
+                     <constructor-arg ref="bar"/>
+                     <constructor-arg ref="baz"/>
+                 </bean>
+                 <bean id="bar" class="x.y.Bar"/>
+                 <bean id="baz" class="x.y.Baz"/>
+            </beans>
+
+            When a bean is referenced , and type is known, the matching can occur.
+            While a simple type is used, with <valu>true</value>, Spring cannot determine the type of the value.
+                so spring cannot match the type without help.
+            For Eg:
+            
+                 public class ExampleBean {
+                     private int years;
+                     private String ultimateAnswer;
+
+                     public ExampleBean(int years, String ultimateAnswer) {
+                     this.years = years;
+                     this.ultimateAnswer = ultimateAnswer;
+                     }
+                }
+
+            Here container can use 'type' matching, only if we explicitly specify the 'type' in the bean attribute.
+          
+            For Eg:
+                <bean id="exampleBean" class="examples.ExampleBean">
+                     <constructor-arg type="int" value="7500000"/>
+                     <constructor-arg type="java.lang.String" value="42"/>
+                </bean>
+
+                We can also use 'index' attribute ro specify the index of construnctor's arguments.
+                For Eg:                    
+                    <bean id="exampleBean" class="examples.ExampleBean">
+                         <constructor-arg index="0" value="7500000"/>
+                         <constructor-arg index="1" value="42"/>
+                    </bean>
+
+                NOTE: Here index is 0 based.
+
+                We can also use constructor's parameter's name:
+               For Eg:
+                    <bean id="exampleBean" class="examples.ExampleBean">
+                         <constructor-arg name="years" value="7500000"/>
+                         <constructor-arg name="ultimateAnswer" value="42"/>
+                    </bean>
+
+        2 Setter based dependency injection : 
+            This type of dependency is injected by container calling the setter method on the bean,
+                after invoking 'no-argument constructor' or 'no-argument factory method'.
+
+            Eg:
+                public class SimpleMovieLister {
+                     // the SimpleMovieLister has a dependency on the MovieFinder
+                     private MovieFinder movieFinder;
+    
+                     // a setter method so that the Spring container can inject a MovieFinder
+                     public void setMovieFinder(MovieFinder movieFinder) {
+                     this.movieFinder = movieFinder;
+                     }
+                     // business logic that actually uses the injected MovieFinder is omitted...
+                }
+
+        NOTE: Setter based DI can also be used when some dependencies are already been injected by 
+                Constructor based DI.
+
+        Which one to use then Constructor-based or setter-based DI?
+            Since we can mix  both, it is recomended as 'THUMB RULE' to use 
+                    constrcutors for mandatory dependencies and 
+                    setter methods or configuration methods for optional dependencies
+            We can make setter method required dependency by using @Required annotation
 
 
+Dependency resolution process
+The container performs bean dependency resolution as follows:
+• The ApplicationContext is created and initialized with configuration metadata that describes all
+the beans. Configuration metadata can be specified via XML, Java code, or annotations.
+• For each bean, its dependencies are expressed in the form of properties, constructor arguments, or
+arguments to the static-factory method if you are using that instead of a normal constructor. These
+dependencies are provided to the bean, when the bean is actually created.
+• Each property or constructor argument is an actual definition of the value to set, or a reference to
+another bean in the container.
+• Each property or constructor argument which is a value is converted from its specified format to the
+actual type of that property or constructor argument. By default Spring can convert a value supplied
+in string format to all built-in types, such as int, long, String, boolean, etc.
+The Spring container validates the configuration of each bean as the container is created. However,
+the bean properties themselves are not set until the bean is actually created. Beans that are singletonscoped and set to be pre-instantiated (the default) are created when the container is created. Scopes
+are defined in Section 7.5, “Bean scopes”. Otherwise, the bean is created only when it is requested.
+Creation of a bean potentially causes a graph of beans to be created, as the bean’s dependencies and
+its dependencies' dependencies (and so on) are created and assigned. Note that resolution mismatches
+among those dependencies may show up late, i.e. on first creation of the affected bean.
+================================================================================
+Reminder: 
+Topics that we will ccover for Basic feature of Sprng framework will be :
+    1- The Ioc container
+    2- Resourses
+    3- Validation, Data Binding and Type conersion
+    4- Spring Expression Language
+    5- Aspect Oriented Programing with Spring
+    6- Spring AOP API
 
 
 
