@@ -370,19 +370,82 @@ NOTE:
     6.The resolution mismatches among these dependencies show up late, ie. on the creation of first affected bean.
 
 CIRCULAR DEPENDENCY :
+        If we use predominantly constructor injection, 
+           then it is possible to create an unresolved circular dependency scenario.
+        Such scenario throws a 'BeanCurrentlyInCreationException'.
+For Eg:
+        Suppose Class A requires an instance of Class B through constructor injection,
+        and Class B requires an instance of Class A through consturctor Injection.
+        If we configure beans for classes A and B, to be injected into each other, the 
+        Spring IoC container detects this circular reference at 'RUNTIME'.
+        and throws a BeanCurrentlyInCreationException.
 
-If you use predominantly constructor injection, it is possible to create an unresolvable circular
-dependency scenario.
-For example: Class A requires an instance of class B through constructor injection, and class B
-requires an instance of class A through constructor injection. If you configure beans for classes
-A and B to be injected into each other, the Spring IoC container detects this circular reference at
-runtime, and throws a BeanCurrentlyInCreationException.
-One possible solution is to edit the source code of some classes to be configured by setters
-rather than constructors. Alternatively, avoid constructor injection and use setter injection only. In
-other words, although it is not recommended, you can configure circular dependencies with setter
-injection.
-Unlike the typical case (with no circular dependencies), a circular dependency between bean A
-and bean B forces one of the beans to be injected into the other prior to being fully initialized itself
+One possible solutions can be:
+        1. to edit the source code of some classes to be configured by setters rather that constructor.
+        2.Avoid constructor injection and use setter injection only.
+        NOTE: Hence we can configure cicular dependencies with setter injection.
+
+==================================================================================
+BEAN SCOPE:
+
+        - Bean Definition is like a 'Recipe' for creating actual instance of class defined as bean(bean creation).
+        - Viewing bean definition as a recipe is important, 
+                beacuase same recipe can be used to create many instances of class(objects/Beans).
+        - We can control not only dependencies and configurations, but also scope of objects created from perticular bean definition.
+        - Spring Framework supports 7 scopes for bean(out of box), 
+                out of these 7, 5 scopes are available only with web-aware ApplicationContext.
+        - WE CAN ALSO CREATE CUSTOM scope for bean.
+
+Scope Description:
+1.singleton (Default):  Scopes a single bean definition to a single object instance per Spring IoC container.
+2.prototype:  Scopes a single bean definition to any number of object instances.
+
+3.request :  Scopes a single bean definition to the lifecycle of a single HTTP request; 
+                that is, each HTTP request has its own instance of a bean created off the back of a single bean definition. 
+                Only valid in the context of a web-aware Spring ApplicationContext.
+4.session :  Scopes a single bean definition to the lifecycle of an HTTP Session.
+                Only valid in the context of a web-aware Spring ApplicationContext.
+5.globalSession:  Scopes a single bean definition to the lifecycle of a global HTTP Session. 
+                        Typically only valid when used in a Portlet context. 
+                        Only valid in the context of a web-aware Spring ApplicationContext.
+6.application:   Scopes a single bean definition to the lifecycle of a ServletContext. 
+                        Only valid in the context of a web-aware Spring ApplicationContext.
+7.websocket:   Scopes a single bean definition to the lifecycle of a WebSocket.
+                        Only valid in the context of a web-aware Spring ApplicationContext.
+
+============
+1.singleton (Default): This is defined as per container per bean.
+                        In XML it is defined as :
+                                <bean id="accountService" class="com.foo.DefaultAccountService"/>
+                                <!-- the following is equivalent, though redundant (singleton scope is the default) -->
+                                <bean id="accountService" class="com.foo.DefaultAccountService" scope="singleton"/>
+
+2.prototype:  This scpe creates a new instance of bean , everytime the request for that specific bean is made.
+                In XML it is defined as :
+                        <bean id="accountService" class="com.foo.DefaultAccountService" scope="prototype"/>
+
+NOTE OF Advice:
+                Use Prototype scope for statful beans.
+                and singleton scope for stateless beans.
+
+                -Spring doesnot manages the complete lifecyle of prototype bean.
+                    The Container instantiate, configures and assembles the bean and then hand it over to client.
+                     Configured distruction lifecycle menthod is not called.
+                        The Client must cleanup  the prototype-scoped objects and release ecpensie resources.
+
+
+3.request :  Scopes a single bean definition to the lifecycle of a single HTTP request; 
+                that is, each HTTP request has its own instance of a bean created off the back of a single bean definition. 
+                Only valid in the context of a web-aware Spring ApplicationContext.
+4.session :  Scopes a single bean definition to the lifecycle of an HTTP Session.
+                Only valid in the context of a web-aware Spring ApplicationContext.
+5.globalSession:  Scopes a single bean definition to the lifecycle of a global HTTP Session. 
+                        Typically only valid when used in a Portlet context. 
+                        Only valid in the context of a web-aware Spring ApplicationContext.
+6.application:   Scopes a single bean definition to the lifecycle of a ServletContext. 
+                        Only valid in the context of a web-aware Spring ApplicationContext.
+7.websocket:   Scopes a single bean definition to the lifecycle of a WebSocket.
+                        Only valid in the context of a web-aware Spring ApplicationContext.
 ================================================================================
 Reminder: 
 Topics that we will ccover for Basic feature of Sprng framework will be :
