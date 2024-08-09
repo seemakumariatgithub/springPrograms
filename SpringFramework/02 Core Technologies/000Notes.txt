@@ -1,0 +1,15 @@
+Topics that we will ccover for Basic feature of Sprng framework will be :
+    1- The Ioc container
+    2- Resourses
+    3- Validation, Data Binding and Type conersion
+    4- Spring Expression Language
+    5- Aspect Oriented Programing with Spring
+    6- Spring AOP API
+
+ 
+
+Note: The Spring Framework has its own AOP frmework, which is conceptually easy to understand.
+    it addresses 80 % of AOP requirements in Java enterprise programing.
+
+    AspectJ- is the richest, in terms of feature.
+            it is most mature AOP implementaiton in javaa enterprise.
