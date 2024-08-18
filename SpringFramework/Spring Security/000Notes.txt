@@ -1,0 +1,181 @@
+Spring Security:
+    Spring Security is the powerful and highly customizable framework.
+    Spring Security is authentication and access control framework.
+    Spring Security focuses on providing both authentication and suthorization for JAVA Application.
+    Real power of spring security is found in how easily it can be extended to meet the custom requirment.
+
+Features of Spring Seurity:
+  1. provides both authentication and authorization
+  2.Protection against attacks like:
+        session fixation
+        clickJacking
+        cross site request forgery(csrf) etc.
+  3. Servlet API integration
+  4.Integration with spring web MVC. 
+
+===========================================================
+In REST APIs:
+  Authnetication: means to verify the user identity.
+  Authorization: means, to determine what resources the user can access.
+=======================================================================
+Spring Security Core Module/Package:
+
+1. Core — spring-security-core.jar:
+      It contains following top level packages:
+          org.springframework.security.core
+          org.springframework.security.access        
+          org.springframework.security.authentication        
+          org.springframework.security.provisioning
+
+2.Remoting — spring-security-remoting.jar:
+    Its main package is :
+          org.springframework.security.remoting.
+3.Web — spring-security-web.jar:
+    Its main package is :
+          org.springframework.security.web.
+4.Config — spring-security-config.jar:
+    Its man package is:
+          org.springframework.security.config
+
+=======================================================================
+JWT:
+
+  Stands for JSON Web Token.
+  This allows to transmit information securly between parties as a:
+            compact,
+            self-contaned,
+            digitaly singed JSON Object.
+==============================================================================================
+Steps to implement JWT authentication in SpringBoot application:
+
+Step1: Create Spring boot project.
+Step2: Add Dependencies
+Step3: Configure Spring Security
+Step4: Create userDetailsService
+Step5: Create a JWT Utility Class
+Step6: Create login endpoint
+Step7: Create protected resource endpoint
+Step8: Add Token Validation and Authentication Filter
+Step9: Test the endpoint
+Step10: Secure Secret Key
+Step11: Handle Token Expiration and Refrech(Optional)
+Step12: Logging and Error Handling
+
+=============================================================================================
+Step1: Create Spring boot project:
+        Create a new SpringBoot project
+
+Step2: Add Dependencies:
+        Add two dependencies:
+          1. Spring Security
+          2. jjwt library -> for JWT support
+      pm.xml should look something like this :
+
+                <dependencies>
+                <!-- Spring Boot Starter -->
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter</artifactId>
+                </dependency>
+                <!-- Spring Security -->
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-security</artifactId>
+                </dependency>
+                <!-- JWT Library -->
+                <dependency>
+                    <groupId>io.jsonwebtoken</groupId>
+                    <artifactId>jjwt</artifactId>
+                    <version>0.9.1</version> <!-- Use the latest version available -->
+                </dependency>
+            </dependencies>
+
+Step3: Configure Spring Security:
+       - Create Security configuration class that extends "WebSecurityConfigurerAdaptor" class.
+       - In this class we specify, the security settings using 'configure' method for:
+              1. indicating the authentication and authorization rules.
+              2. also we will exclud the login and token endpoint to allow unauhenticated access.
+
+              @Configuration
+              @EnableWebSecurity
+              public class SecurityConfig extends WebSecurityConfigurerAdapter {
+                  @Override
+                  protected void configure(HttpSecurity http) throws Exception {
+                      http.csrf().disable()
+                          .authorizeRequests()
+                          .antMatchers("/login", "/token").permitAll() // Exclude login and token endpoints from authentication
+                          .anyRequest().authenticated();
+                  }
+              }
+
+Here: CSRF : is Cross Site Request Forgery :
+            This is a type of atttack, 
+                which forces the authenticated user to send the request to the Web Appliccation,
+                for which the user is not currently authenticated.
+
+
+Step4: Create userDetailsService:
+        Then implement the userDetailsService class to load the user details from the datasource.
+
+Step5: Create a JWT Utility Class:
+        Now create a utility class to generate and parsing JWTs,
+          using jjwt library.
+        This class is responsible for:
+            1. creating JWTs token when user login
+            2. validating incoming JWT.
+
+              import io.jsonwebtoken.*;
+              public class JwtUtil {
+
+                  private static final String SECRET = "your-secret-key";
+                  private static final long EXPIRATION_TIME = 864_000_000; // 10 days
+
+                  public static String generateToken(String username) {
+                      return Jwts.builder()
+                          .setSubject(username)
+                          .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                          .signWith(SignatureAlgorithm.HS512, SECRET)
+                          .compact();
+                  }
+                  public static String extractUsername(String token) {
+                      return Jwts.parser()
+                          .setSigningKey(SECRET)
+                          .parseClaimsJws(token)
+                          .getBody()
+                          .getSubject();
+                  }
+              }
+
+
+
+Step6: Create login endpoint:
+
+      @RestController
+      public class AuthController {
+          @PostMapping("/login")
+          public String login(@RequestBody LoginRequest request) {
+              // Authenticate the user (e.g., using Spring Security's authentication manager)
+              // If authentication is successful, generate a JWT
+              String token = JwtUtil.generateToken(request.getUsername());
+              return token;
+          }
+      }
+Step7: Create protected resource endpoint:
+        Develop an endpoint that requires a valid JWT for access.
+        Use Spring Security annotations to enforce authorization based on roles or other criteria
+
+            @RestController
+            public class ProtectedResourceController {
+            
+                @GetMapping("/protected")
+                @Secured("ROLE_USER") // Role-based authorization
+                public String protectedResource() {
+                    return "This is a protected resource.";
+                }
+            }
+Step8: Add Token Validation and Authentication Filter
+Step9: Test the endpoint
+Step10: Secure Secret Key
+Step11: Handle Token Expiration and Refrech(Optional)
+Step12: Logging and Error Handling
+
