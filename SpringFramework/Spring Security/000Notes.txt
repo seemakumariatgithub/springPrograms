@@ -36,7 +36,26 @@ Spring Security Core Module/Package:
 4.Config — spring-security-config.jar:
     Its man package is:
           org.springframework.security.config
+5.OAuth 2.0 Core — spring-security-oauth2-core.jar
+    Its main package is:
+        org.springframework.security.oauth2.core.
+6.OAuth 2.0 Client — spring-security-oauth2-client.jar
+    Its main package is:
+        org.springframework.security.oauth2.core.
+7.OAuth 2.0 JOSE — spring-security-oauth2-jose.jar
+    Its top level packages are:
+        org.springframework.security.oauth2.jwt
+        org.springframework.security.oauth2.jose
 
+    Here JOSE is for Javascript Object Signing and Encription
+8.OAuth 2.0 Resource Server — spring-security-oauth2-resource-server.jar
+         org.springframework.security.oauth2.server.resource.
+9.ACL — spring-security-acl.jar
+        org.springframework.security.acls.
+10.CAS — spring-security-cas.jar:
+        org.springframework.security.cas.
+11.Test — spring-security-test.jar
+12.Taglibs — spring-security-taglibs.jar
 =======================================================================
 JWT:
 
