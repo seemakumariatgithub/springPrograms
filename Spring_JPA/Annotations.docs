@@ -7,3 +7,8 @@ ORM => Stands for 'Object Relational Mapping'
   * @Query Annotation supports both JPQL and native SQL queries.
   * It also supports SpEL expressions.
   * @Param in method arguments to bind query parameter.
+
+
+Attributes for Query Annotation
+NativeType:
+Value: 
