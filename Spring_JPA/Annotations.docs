@@ -1,0 +1,9 @@
+JPA => Stands for 'Java Persistence API'
+ORM => Stands for 'Object Relational Mapping'
+  Object relation mapping is simply the process of persisting any Java object directly into a database table
+==========================================================================  
+@query :
+  it is used for defining custom queries in Spring Data JPA
+  * @Query Annotation supports both JPQL and native SQL queries.
+  * It also supports SpEL expressions.
+  * @Param in method arguments to bind query parameter.
